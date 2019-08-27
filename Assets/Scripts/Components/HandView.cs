@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TheLiquidFire.Animation;
+using TheLiquidFire.Pooling;
 
 public class HandView : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class HandView : MonoBehaviour
     public Transform activeHandle;
     public Transform inactiveHandle;
 
-    public IEnumerator AddCard(Transform card, bool showPreview)
+    public IEnumerator AddCard(Transform card, bool showPreview, bool overDraw)
     {
         if (showPreview)
         {
@@ -18,10 +19,18 @@ public class HandView : MonoBehaviour
                 yield return null;
         }
 
-        cards.Add(card);
-        var layout = LayoutCards();
-        while (layout.MoveNext())
-            yield return null;
+        if (overDraw)
+        {
+            var discard = OverdrawCard(card);
+            while (discard.MoveNext()) { yield return null; }
+        }
+        else
+        {
+            cards.Add(card);
+            var layout = LayoutCards();
+            while (layout.MoveNext())
+                yield return null;
+        }
     }
 
     IEnumerator ShowPreview(Transform card)
@@ -66,5 +75,17 @@ public class HandView : MonoBehaviour
 
         while (tweener != null)
             yield return null;
+    }
+
+    IEnumerator OverdrawCard(Transform card)
+    {
+        Tweener tweener = card.ScaleTo(Vector3.zero, 0.5f, EasingEquations.EaseInBack);
+        while (tweener != null)
+            yield return null;
+        card.gameObject.SetActive(false);
+        card.localScale = Vector3.one;
+        var poolable = card.GetComponent<Poolable>();
+        var pooler = GetComponentInParent<BoardView>().cardPooler;
+        pooler.Enqueue(poolable);
     }
 }

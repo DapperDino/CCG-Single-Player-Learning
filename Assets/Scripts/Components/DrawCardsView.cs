@@ -9,11 +9,13 @@ public class DrawCardsView : MonoBehaviour
     void OnEnable()
     {
         this.AddObserver(OnPrepareDrawCards, Global.PrepareNotification<DrawCardsAction>());
+        this.AddObserver(OnPrepareDrawCards, Global.PrepareNotification<OverdrawAction>());
     }
 
     void OnDisable()
     {
         this.RemoveObserver(OnPrepareDrawCards, Global.PrepareNotification<DrawCardsAction>());
+        this.RemoveObserver(OnPrepareDrawCards, Global.PrepareNotification<OverdrawAction>());
     }
 
     void OnPrepareDrawCards(object sender, object args)
@@ -42,7 +44,10 @@ public class DrawCardsView : MonoBehaviour
             cardView.gameObject.SetActive(true);
 
             var showPreview = action.player.mode == ControlModes.Local;
-            var addCard = playerView.hand.AddCard(cardView.transform, showPreview);
+
+            var overDraw = action is OverdrawAction;
+            var addCard = playerView.hand.AddCard(cardView.transform, showPreview, overDraw);
+
             while (addCard.MoveNext())
                 yield return null;
         }

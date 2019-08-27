@@ -2,8 +2,8 @@
 
 public class Player
 {
-    public const int maxDeck = 30;
-    public const int maxHand = 10;
+    public const int maxDeck = 5;
+    public const int maxHand = 3;
     public const int maxBattlefield = 7;
     public const int maxSecrets = 5;
 
