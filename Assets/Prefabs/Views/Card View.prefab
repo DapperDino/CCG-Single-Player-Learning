@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4639183844367446}
   - component: {fileID: 114422528500156944}
+  - component: {fileID: 114052090315365228}
   m_Layer: 0
   m_Name: Card View
   m_TagString: Untagged
@@ -51,6 +52,18 @@ MonoBehaviour:
   manaText: {fileID: 114584117368063328}
   titleText: {fileID: 114911487861666222}
   cardText: {fileID: 114826719164991100}
+--- !u!114 &114052090315365228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1050504981477394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad0671d0ffa75444babdfd256914d99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1068977951507142
 GameObject:
   m_ObjectHideFlags: 0

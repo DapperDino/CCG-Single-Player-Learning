@@ -1,9 +1,11 @@
-﻿public class ChangeTurnAction : GameAction
-{
-    public int targetPlayerIndex;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-    public ChangeTurnAction(int targetPlayerIndex)
-    {
-        this.targetPlayerIndex = targetPlayerIndex;
-    }
+public class ChangeTurnAction : GameAction {
+	public int targetPlayerIndex;
+
+	public ChangeTurnAction (int targetPlayerIndex) {
+		this.targetPlayerIndex = targetPlayerIndex;
+	}
 }

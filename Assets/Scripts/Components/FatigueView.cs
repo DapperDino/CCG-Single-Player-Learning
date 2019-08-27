@@ -1,43 +1,40 @@
 ﻿using System.Collections;
-using TheLiquidFire.Animation;
-using TheLiquidFire.AspectContainer;
-using TheLiquidFire.Notifications;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Notifications;
+using TheLiquidFire.Animation;
 
-public class FatigueView : MonoBehaviour
-{
-    [SerializeField] Text fatigueLabel;
+public class FatigueView : MonoBehaviour {
 
-    private void OnEnable()
-    {
-        this.AddObserver(OnPrepareFatigue, Global.PrepareNotification<FatigueAction>());
-    }
+	[SerializeField] Text fatigueLabel;
 
-    private void OnDisable()
-    {
-        this.RemoveObserver(OnPrepareFatigue, Global.PrepareNotification<FatigueAction>());
-    }
+	void OnEnable () {
+		this.AddObserver (OnPrepareFatigue, Global.PrepareNotification<FatigueAction> ());
+	}
 
-    void OnPrepareFatigue(object sender, object args)
-    {
-        var action = args as FatigueAction;
-        action.perform.viewer = FatigueViewer;
-    }
+	void OnDisable () {
+		this.RemoveObserver (OnPrepareFatigue, Global.PrepareNotification<FatigueAction> ());
+	}
 
-    IEnumerator FatigueViewer(IContainer game, GameAction action)
-    {
-        yield return true;
-        var fatigue = action as FatigueAction;
+	void OnPrepareFatigue (object sender, object args) {
+		var action = args as FatigueAction;
+		action.perform.viewer = FatigueViewer;
+	}
 
-        fatigueLabel.text = $"Fatigue\n{fatigue.player.fatigue}";
+	IEnumerator FatigueViewer (IContainer game, GameAction action) {
+		yield return true;
+		var fatigue = action as FatigueAction;
 
-        Tweener tweener = transform.ScaleTo(Vector3.one, 0.5f, EasingEquations.EaseOutBack);
+		fatigueLabel.text = string.Format ("Fatigue\n{0}", fatigue.player.fatigue);
 
-        while (tweener != null) { yield return null; }
+		Tweener tweener = transform.ScaleTo (Vector3.one, 0.5f, EasingEquations.EaseOutBack);
+		while (tweener != null)
+			yield return null;
 
-        tweener = transform.ScaleTo(Vector3.zero, 0.5f, EasingEquations.EaseInBack);
-
-        while (tweener != null) { yield return null; }
-    }
+		tweener = transform.ScaleTo (Vector3.zero, 0.5f, EasingEquations.EaseInBack);
+		while (tweener != null)
+			yield return null;
+	}
 }
