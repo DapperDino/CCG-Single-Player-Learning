@@ -1,10 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace TheLiquidFire.Pooling
+﻿namespace TheLiquidFire.Pooling
 {
-	public class IntKeyedPooler : KeyedPooler<int> 
-	{
-		
-	}
+    public class IntKeyedPooler : KeyedPooler<int>
+    {
+
+    }
 }

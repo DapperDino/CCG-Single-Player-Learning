@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace TheLiquidFire.UI
+﻿namespace TheLiquidFire.UI
 {
-	public interface IContainer
-	{
-		IFlow Flow { get; }
-		void AutoSize ();
-	}
+    public interface IContainer
+    {
+        IFlow Flow { get; }
+        void AutoSize();
+    }
 }

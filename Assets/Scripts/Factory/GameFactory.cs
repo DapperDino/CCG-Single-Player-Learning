@@ -1,22 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using TheLiquidFire.AspectContainer;
+﻿using TheLiquidFire.AspectContainer;
 
-public static class GameFactory {
+public static class GameFactory
+{
 
-	public static Container Create () {
-		Container game = new Container ();
+    public static Container Create()
+    {
+        Container game = new Container();
 
-		// Add Systems
-		game.AddAspect<ActionSystem> ();
-		game.AddAspect<DataSystem> ();
-		game.AddAspect<MatchSystem> ();
+        // Add Systems
+        game.AddAspect<ActionSystem>();
+        game.AddAspect<DataSystem>();
+        game.AddAspect<MatchSystem>();
+        game.AddAspect<PlayerSystem>();
 
-		// Add Other
-		game.AddAspect<StateMachine> ();
-		game.AddAspect<GlobalGameState> ();
+        // Add Other
+        game.AddAspect<StateMachine>();
+        game.AddAspect<GlobalGameState>();
 
-		return game;
-	}
+        return game;
+    }
 }
