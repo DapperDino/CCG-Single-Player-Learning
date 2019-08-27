@@ -1,16 +1,13 @@
-﻿using CCG.Aspects;
-using CCG.Containers;
-using CCG.GameActions;
-using CCG.Notifications;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Notifications;
 
 namespace Tests
 {
     public class ActionSystemTests
     {
-
         private class TestAction : GameAction
         {
             public bool didPrepare;
@@ -40,38 +37,38 @@ namespace Tests
 
             public void Setup()
             {
-                this.AddObserver(OnSequenceBegin, ActionSystem.BeginSequenceNotification);
-                this.AddObserver(OnSequenceEnd, ActionSystem.EndSequenceNotification);
-                this.AddObserver(OnComplete, ActionSystem.CompleteNotification);
+                this.AddObserver(OnSequenceBegin, ActionSystem.beginSequenceNotification);
+                this.AddObserver(OnSequenceEnd, ActionSystem.endSequenceNotification);
+                this.AddObserver(OnComplete, ActionSystem.completeNotification);
                 this.AddObserver(OnPrepare, Global.PrepareNotification<TestAction>());
                 this.AddObserver(OnPerform, Global.PerformNotification<TestAction>());
-                this.AddObserver(OnDeath, ActionSystem.DeathReaperNotification);
+                this.AddObserver(OnDeath, ActionSystem.deathReaperNotification);
             }
 
             public void TearDown()
             {
-                this.RemoveObserver(OnSequenceBegin, ActionSystem.BeginSequenceNotification);
-                this.RemoveObserver(OnSequenceEnd, ActionSystem.EndSequenceNotification);
-                this.RemoveObserver(OnComplete, ActionSystem.CompleteNotification);
+                this.RemoveObserver(OnSequenceBegin, ActionSystem.beginSequenceNotification);
+                this.RemoveObserver(OnSequenceEnd, ActionSystem.endSequenceNotification);
+                this.RemoveObserver(OnComplete, ActionSystem.completeNotification);
                 this.RemoveObserver(OnPrepare, Global.PrepareNotification<TestAction>());
                 this.RemoveObserver(OnPerform, Global.PerformNotification<TestAction>());
-                this.RemoveObserver(OnDeath, ActionSystem.DeathReaperNotification);
+                this.RemoveObserver(OnDeath, ActionSystem.deathReaperNotification);
             }
 
             void OnSequenceBegin(object sender, object args)
             {
                 var action = args as TestAction;
-                var marks = action.OrderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
+                var marks = action.orderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
                 marks.sequenceBegin = true;
 
-                action.Prepare.Viewer = TestViewer;
-                action.Perform.Viewer = TestViewer;
+                action.prepare.viewer = TestViewer;
+                action.perform.viewer = TestViewer;
             }
 
             void OnSequenceEnd(object sender, object args)
             {
                 var action = args as TestAction;
-                var marks = action.OrderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
+                var marks = action.orderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
                 marks.sequenceEnd = true;
             }
 
@@ -83,7 +80,7 @@ namespace Tests
             void OnPrepare(object sender, object args)
             {
                 var action = args as TestAction;
-                var marks = action.OrderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
+                var marks = action.orderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
                 marks.prepare = true;
                 action.didPrepare = true;
             }
@@ -91,11 +88,11 @@ namespace Tests
             void OnPerform(object sender, object args)
             {
                 var action = args as TestAction;
-                var marks = action.OrderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
+                var marks = action.orderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
                 marks.perform = true;
                 action.didPerform = true;
 
-                if (action.OrderOfPlay != rootActionOrder)
+                if (action.orderOfPlay != rootActionOrder)
                 {
                     reactions.Add(action);
                 }
@@ -103,15 +100,13 @@ namespace Tests
                 {
                     AddReactions((IContainer)sender);
                 }
-                if (action.Priority == depthCheckPriority)
+                if (action.priority == depthCheckPriority)
                 {
-                    var reaction = new TestAction
-                    {
-                        OrderOfPlay = depthReactionOrder
-                    };
+                    var reaction = new TestAction();
+                    reaction.orderOfPlay = depthReactionOrder;
                     ((IContainer)sender).GetAspect<ActionSystem>().AddReaction(reaction);
                 }
-                if (action.OrderOfPlay == depthReactionOrder)
+                if (action.orderOfPlay == depthReactionOrder)
                 {
                     depthFirst = (reactions.Count == 2);
                 }
@@ -120,14 +115,12 @@ namespace Tests
             void OnDeath(object sender, object args)
             {
                 var action = args as TestAction;
-                var marks = action.OrderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
+                var marks = action.orderOfPlay == rootActionOrder ? actionMarks : reactionMarks;
 
                 if (actionMarks.deathReaper == false)
                 {
-                    var reaction = new TestAction
-                    {
-                        OrderOfPlay = int.MaxValue
-                    };
+                    var reaction = new TestAction();
+                    reaction.orderOfPlay = int.MaxValue;
                     ((ActionSystem)sender).AddReaction(reaction);
                 }
                 else
@@ -149,12 +142,10 @@ namespace Tests
             {
                 for (int i = 0; i < 5; ++i)
                 {
-                    var reaction = new TestAction
-                    {
-                        OrderOfPlay = UnityEngine.Random.Range(1, 100)
-                    };
+                    var reaction = new TestAction();
+                    reaction.orderOfPlay = UnityEngine.Random.Range(1, 100);
                     if (i == 2)
-                        reaction.Priority = depthCheckPriority;
+                        reaction.priority = depthCheckPriority;
                     game.GetAspect<ActionSystem>().AddReaction(reaction);
                 }
             }
@@ -191,7 +182,7 @@ namespace Tests
         }
 
         [Test]
-        public void testActionSystemTracksActiveState()
+        public void TestActionSystemTracksActiveState()
         {
             actionSystem.Perform(new TestAction());
             Assert.IsTrue(actionSystem.IsActive);
@@ -200,7 +191,7 @@ namespace Tests
         }
 
         [Test]
-        public void testActionNotifications()
+        public void TestActionNotifications()
         {
             actionSystem.Perform(new TestAction());
             RunToCompletion();
@@ -215,7 +206,7 @@ namespace Tests
         }
 
         [Test]
-        public void testReactionNotifications()
+        public void TestReactionNotifications()
         {
             actionSystem.Perform(new TestAction());
             RunToCompletion();
@@ -230,7 +221,7 @@ namespace Tests
         }
 
         [Test]
-        public void testReactionsAreSorted()
+        public void TestReactionsAreSorted()
         {
             actionSystem.Perform(new TestAction());
             RunToCompletion();
@@ -239,19 +230,19 @@ namespace Tests
             for (int i = 0; i < testSystem.reactions.Count; ++i)
             {
                 var reaction = testSystem.reactions[i];
-                Assert.LessOrEqual(reaction.Priority, priority);
-                if (reaction.Priority != priority)
+                Assert.LessOrEqual(reaction.priority, priority);
+                if (reaction.priority != priority)
                 {
-                    priority = reaction.Priority;
+                    priority = reaction.priority;
                     orderOfPlay = int.MinValue;
                 }
-                Assert.GreaterOrEqual(reaction.OrderOfPlay, orderOfPlay);
-                orderOfPlay = reaction.OrderOfPlay;
+                Assert.GreaterOrEqual(reaction.orderOfPlay, orderOfPlay);
+                orderOfPlay = reaction.orderOfPlay;
             }
         }
 
         [Test]
-        public void testCancelAction()
+        public void TestCancelAction()
         {
             var action = new TestAction();
             action.Cancel();
@@ -262,7 +253,7 @@ namespace Tests
         }
 
         [Test]
-        public void testLoopableDeathPhase()
+        public void TestLoopableDeathPhase()
         {
             actionSystem.Perform(new TestAction());
             RunToCompletion();
@@ -270,7 +261,7 @@ namespace Tests
         }
 
         [Test]
-        public void testDepthFirstReactions()
+        public void TestDepthFirstReactions()
         {
             actionSystem.Perform(new TestAction());
             RunToCompletion();
@@ -278,10 +269,10 @@ namespace Tests
         }
 
         [Test]
-        public void testActionTypesHaveUniqueIDs()
+        public void TestActionTypesHaveUniqueIDs()
         {
-            var id1 = new GameAction().ID;
-            var id2 = new TestAction().ID;
+            var id1 = new GameAction().id;
+            var id2 = new TestAction().id;
             Assert.AreNotEqual(id1, id2);
         }
     }

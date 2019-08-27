@@ -1,8 +1,6 @@
-﻿using CCG.Aspects;
-using CCG.Containers;
-using CCG.GameActions;
-using CCG.Notifications;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using TheLiquidFire.AspectContainer;
+using TheLiquidFire.Notifications;
 
 namespace Tests
 {
@@ -14,27 +12,27 @@ namespace Tests
         MatchSystem matchSystem;
         TestSkipSystem testSkipSystem;
 
-        private class TestSkipSystem : Aspect, IObserver
+        private class TestSkipSystem : Aspect, IObserve
         {
             public bool enabled;
 
             public void Awake()
             {
-                this.AddObserver(OnPrepareChangeTurn, Global.PrepareNotification<ChangeTurnAction>(), Container);
+                this.AddObserver(OnPrepareChangeTurn, Global.PrepareNotification<ChangeTurnAction>(), container);
             }
 
             public void Destroy()
             {
-                this.RemoveObserver(OnPrepareChangeTurn, Global.PrepareNotification<ChangeTurnAction>(), Container);
+                this.RemoveObserver(OnPrepareChangeTurn, Global.PrepareNotification<ChangeTurnAction>(), container);
             }
 
-            private void OnPrepareChangeTurn(object sender, object args)
+            void OnPrepareChangeTurn(object sender, object args)
             {
                 if (!enabled)
                     return;
 
                 var action = args as ChangeTurnAction;
-                action.TargetPlayerIndex = Container.GetMatch().CurrentPlayerIndex;
+                action.targetPlayerIndex = container.GetMatch().currentPlayerIndex;
             }
         }
 
@@ -56,54 +54,43 @@ namespace Tests
         }
 
         [Test]
-        public void ChangingTurn_AddsAction()
+        public void TestChangeTurnAddsAction()
         {
-            // ASSERT
             Assert.IsFalse(actionSystem.IsActive);
             matchSystem.ChangeTurn(1);
             Assert.IsTrue(actionSystem.IsActive);
         }
 
         [Test]
-        public void ChangingTurn_AppliesAction()
+        public void TestChangeTurnAppliesAction()
         {
-            // ARRANGE
-            dataSystem.Match.CurrentPlayerIndex = 0;
+            dataSystem.match.currentPlayerIndex = 0;
             int targetIndex = 1;
-
-            // ACT
             matchSystem.ChangeTurn(targetIndex);
             RunToCompletion();
-
-            // ASSERT
-            Assert.AreEqual(dataSystem.Match.CurrentPlayerIndex, targetIndex);
+            Assert.AreEqual(dataSystem.match.currentPlayerIndex, targetIndex);
         }
 
         [Test]
-        public void DefaultChangeTurn_IsOpponentTurn()
+        public void TestDefaultChangeTurnIsOpponentTurn()
         {
             for (int i = 0; i < 2; ++i)
             {
-                int lastIndex = dataSystem.Match.CurrentPlayerIndex;
+                int lastIndex = dataSystem.match.currentPlayerIndex;
                 matchSystem.ChangeTurn();
                 RunToCompletion();
-                Assert.AreNotEqual(dataSystem.Match.CurrentPlayerIndex, lastIndex);
+                Assert.AreNotEqual(dataSystem.match.currentPlayerIndex, lastIndex);
             }
         }
 
         [Test]
-        public void ModifyingChangeTurn_IsModified()
+        public void TestChangeTurnCanBeModified()
         {
-            // ARRANGE
             testSkipSystem.enabled = true;
-            int startIndex = dataSystem.Match.CurrentPlayerIndex;
-
-            // ACT
+            int startIndex = dataSystem.match.currentPlayerIndex;
             matchSystem.ChangeTurn();
             RunToCompletion();
-
-            // ASSERT
-            Assert.AreEqual(dataSystem.Match.CurrentPlayerIndex, startIndex);
+            Assert.AreEqual(dataSystem.match.currentPlayerIndex, startIndex);
         }
 
         void RunToCompletion()

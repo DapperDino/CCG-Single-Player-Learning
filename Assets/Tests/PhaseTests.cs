@@ -1,32 +1,29 @@
-﻿using CCG;
-using CCG.Containers;
-using CCG.GameActions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections;
+using TheLiquidFire.AspectContainer;
 
 namespace Tests
 {
     public class PhaseTests
     {
-
         private class TestAction : GameAction
         {
-            public int LoopCount { get; }
-            public int Keyframe { get; }
+            public readonly int loopCount;
+            public readonly int keyframe;
             public int Step { get; private set; }
             public bool IsComplete { get; private set; }
 
             public TestAction(int loopCount, int keyFrame)
             {
-                LoopCount = loopCount;
-                Keyframe = keyFrame;
+                this.loopCount = loopCount;
+                keyframe = keyFrame;
             }
 
             public IEnumerator KeyFrameViewer(IContainer container, GameAction action)
             {
-                for (Step = 0; Step < LoopCount; ++Step)
+                for (Step = 0; Step < loopCount; ++Step)
                 {
-                    if (Step == LoopCount)
+                    if (Step == keyframe)
                     {
                         yield return true;
                     }
@@ -46,77 +43,54 @@ namespace Tests
         [Test]
         public void PhaseRunsCompleteViewerFlow()
         {
-            // ARRANGE
             var action = new TestAction(10, 5);
-            var phase = new Phase(action, action.KeyFrameHandler)
-            {
-                Viewer = action.KeyFrameViewer
-            };
-            
-            // ACT
+            var phase = new Phase(action, action.KeyFrameHandler);
+            phase.viewer = action.KeyFrameViewer;
+
             var flow = phase.Flow(null);
             while (flow.MoveNext()) { }
-
-            // ASSERT
-            Assert.AreEqual(action.Step, action.LoopCount);
+            Assert.AreEqual(action.Step, action.loopCount);
         }
 
         [Test]
         public void PhaseTriggersHandler()
         {
-            // ARRANGE
             var action = new TestAction(10, 5);
-            var phase = new Phase(action, action.KeyFrameHandler)
-            {
-                Viewer = action.KeyFrameViewer
-            };
+            var phase = new Phase(action, action.KeyFrameHandler);
+            phase.viewer = action.KeyFrameViewer;
 
-            // ACT
             var flow = phase.Flow(null);
             while (flow.MoveNext()) { }
-
-            // ASSERT
             Assert.IsTrue(action.IsComplete);
         }
 
         [Test]
         public void PhaseTriggersHandlerWithoutKeyFrame()
         {
-            // ARRANGE
             var action = new TestAction(10, -1);
-            var phase = new Phase(action, action.KeyFrameHandler)
-            {
-                Viewer = action.KeyFrameViewer
-            };
+            var phase = new Phase(action, action.KeyFrameHandler);
+            phase.viewer = action.KeyFrameViewer;
 
-            // ACT
             var flow = phase.Flow(null);
             while (flow.MoveNext()) { }
-
-            // ASSERT
             Assert.IsTrue(action.IsComplete);
         }
 
         [Test]
         public void PhaseTriggersOnKeyFrame()
         {
-            // ARRANGE
             var action = new TestAction(10, 5);
-            var phase = new Phase(action, action.KeyFrameHandler)
-            {
-                Viewer = action.KeyFrameViewer
-            };
-            var flow = phase.Flow(null);
+            var phase = new Phase(action, action.KeyFrameHandler);
+            phase.viewer = action.KeyFrameViewer;
 
-            // ACT
+            var flow = phase.Flow(null);
             while (flow.MoveNext())
             {
-                // ASSERT
-                if (action.Step < action.Keyframe)
+                if (action.Step < action.keyframe)
                 {
                     Assert.IsFalse(action.IsComplete);
                 }
-                else if (action.Step > action.Keyframe)
+                else if (action.Step > action.keyframe)
                 {
                     Assert.IsTrue(action.IsComplete);
                 }
