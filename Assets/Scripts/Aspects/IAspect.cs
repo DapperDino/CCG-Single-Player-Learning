@@ -1,4 +1,6 @@
-﻿namespace CCG
+﻿using CCG.Containers;
+
+namespace CCG.Aspects
 {
     public interface IAspect
     {

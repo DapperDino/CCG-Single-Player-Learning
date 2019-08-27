@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CCG.Aspects;
+using System.Collections.Generic;
 
-namespace CCG
+namespace CCG.Containers
 {
     public class Container : IContainer
     {

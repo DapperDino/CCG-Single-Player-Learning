@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CCG.Models
+namespace CCG
 {
     public class Mana
     {

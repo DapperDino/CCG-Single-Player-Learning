@@ -1,7 +1,7 @@
 ﻿using CCG.Cards;
 using System.Collections.Generic;
 
-namespace CCG.Models
+namespace CCG
 {
     public class Player
     {
@@ -11,7 +11,6 @@ namespace CCG.Models
         private const int MaxSecrets = 5;
 
         private readonly int index = 0;
-        private ControlModes mode = ControlModes.Computer;
         private Mana mana = new Mana();
         private int fatigue;
 
@@ -27,6 +26,8 @@ namespace CCG.Models
         {
             this.index = index;
         }
+
+        public ControlModes Mode { get; set; } = ControlModes.Computer;
 
         public List<Card> this[Zones z]
         {

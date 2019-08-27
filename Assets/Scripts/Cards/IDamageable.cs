@@ -1,4 +1,4 @@
-﻿namespace CCG
+﻿namespace CCG.Cards
 {
     public interface IDamageable
     {

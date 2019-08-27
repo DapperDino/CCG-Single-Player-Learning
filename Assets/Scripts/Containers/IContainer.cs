@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using CCG.Aspects;
+using System.Collections.Generic;
 
-namespace CCG
+namespace CCG.Containers
 {
     public interface IContainer
     {
@@ -9,5 +10,6 @@ namespace CCG
         T AddAspect<T>(string key = null) where T : IAspect, new();
         T AddAspect<T>(T aspect, string key = null) where T : IAspect;
         T GetAspect<T>(string key = null) where T : IAspect;
+        void ChangeState<T>();
     }
 }
