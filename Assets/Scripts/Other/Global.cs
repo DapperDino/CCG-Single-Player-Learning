@@ -26,4 +26,20 @@ public static class Global {
 	public static string PerformNotification (System.Type type) {
 		return string.Format ("{0}.PerformNotification", type.Name);
 	}
+
+	public static string ValidateNotification<T> () {
+		return ValidateNotification (typeof(T));
+	}
+
+	public static string ValidateNotification (System.Type type) {
+		return string.Format ("{0}.ValidateNotification", type.Name);
+	}
+
+	public static string CancelNotification<T> () {
+		return CancelNotification (typeof(T));
+	}
+
+	public static string CancelNotification (System.Type type) {
+		return string.Format ("{0}.CancelNotification", type.Name);
+	}
 }

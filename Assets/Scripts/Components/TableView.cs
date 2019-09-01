@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using TheLiquidFire.Pooling;
 using TheLiquidFire.Notifications;
+using TheLiquidFire.Pooling;
 using TheLiquidFire.Extensions;
 using TheLiquidFire.AspectContainer;
 using TheLiquidFire.Animation;
 
 public class TableView : MonoBehaviour
 {
-    public GameObject minionViewPrefab;
     public List<MinionView> minions = new List<MinionView>();
-
     SetPooler minionPooler;
 
     void Awake()
@@ -24,11 +22,36 @@ public class TableView : MonoBehaviour
     void OnEnable()
     {
         this.AddObserver(OnPrepareSummon, Global.PrepareNotification<SummonMinionAction>());
+        this.AddObserver(OnPrepareDeath, Global.PrepareNotification<DeathAction>());
     }
 
     void OnDisable()
     {
         this.RemoveObserver(OnPrepareSummon, Global.PrepareNotification<SummonMinionAction>());
+        this.RemoveObserver(OnPrepareDeath, Global.PrepareNotification<DeathAction>());
+    }
+
+    void OnPrepareDeath(object sender, object args)
+    {
+        var action = args as DeathAction;
+        if (GetComponentInParent<PlayerView>().player.index == action.card.ownerIndex)
+            action.perform.viewer = ReapMinion;
+    }
+
+    public IEnumerator ReapMinion(IContainer game, GameAction action)
+    {
+        var reap = action as DeathAction;
+        var view = GetMatch(reap.card);
+        view.transform.ScaleTo(Vector3.zero);
+        minions.Remove(view.GetComponent<MinionView>());
+
+        var tweener = LayoutMinions();
+
+        while (tweener != null)
+            yield return null;
+        view.SetActive(false);
+        view.transform.localScale = Vector3.one;
+        minionPooler.Enqueue(view.GetComponent<Poolable>());
     }
 
     void OnPrepareSummon(object sender, object args)
@@ -60,6 +83,16 @@ public class TableView : MonoBehaviour
         tweener.equation = EasingEquations.EaseOutBounce;
         while (tweener != null)
             yield return null;
+    }
+
+    public GameObject GetMatch(Card card)
+    {
+        for (int i = minions.Count - 1; i >= 0; --i)
+        {
+            if (minions[i].minion == card)
+                return minions[i].gameObject;
+        }
+        return null;
     }
 
     Tweener LayoutMinions()

@@ -13,6 +13,7 @@ public class GameAction {
 	public bool isCanceled { get; protected set; }
 	public Phase prepare { get; protected set; }
 	public Phase perform { get; protected set; }
+	public Phase cancel { get; protected set; }
 	#endregion
 
 	#region Constructor
@@ -20,6 +21,7 @@ public class GameAction {
 		id = Global.GenerateID (this.GetType ());
 		prepare = new Phase (this, OnPrepareKeyFrame);
 		perform = new Phase (this, OnPerformKeyFrame);
+		cancel = new Phase (this, OnCancelKeyFrame);
 	}
 	#endregion
 
@@ -37,6 +39,11 @@ public class GameAction {
 
 	protected virtual void OnPerformKeyFrame (IContainer game) {
 		var notificationName = Global.PerformNotification (this.GetType ());
+		game.PostNotification (notificationName, this);
+	}
+
+	protected virtual void OnCancelKeyFrame (IContainer game) {
+		var notificationName = Global.CancelNotification (this.GetType ());
 		game.PostNotification (notificationName, this);
 	}
 	#endregion

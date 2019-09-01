@@ -709,7 +709,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -801,7 +801,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1030,55 +1030,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1378645639}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &479886887
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 479886888}
-  - component: {fileID: 479886889}
-  m_Layer: 0
-  m_Name: Minion Pooler
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &479886888
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479886887}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 796513616}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &479886889
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 479886887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1351124ac458142aeac80b81959f78f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  key: 
-  prefab: {fileID: 1793322241184360, guid: ea8dae6c7dcd24cca80a7f1ec984aaf1, type: 3}
-  prepopulate: 0
-  maxCount: 2147483647
-  autoRegister: 1
-  autoClear: 1
 --- !u!1 &480752107
 GameObject:
   m_ObjectHideFlags: 0
@@ -1141,7 +1092,7 @@ MeshRenderer:
   m_PreserveUVs: 1
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -1724,6 +1675,8 @@ GameObject:
   - component: {fileID: 796513616}
   - component: {fileID: 796513617}
   - component: {fileID: 796513618}
+  - component: {fileID: 796513619}
+  - component: {fileID: 796513620}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -1748,8 +1701,8 @@ Transform:
   - {fileID: 533420352}
   - {fileID: 491691746}
   - {fileID: 1269901758}
-  - {fileID: 479886888}
   - {fileID: 1526749284}
+  - {fileID: 1495519738}
   m_Father: {fileID: 1054444361}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1771,7 +1724,7 @@ MonoBehaviour:
   - {fileID: 777421075}
   - {fileID: 1453462702}
   cardPooler: {fileID: 1269901759}
-  minionPooler: {fileID: 479886889}
+  minionPooler: {fileID: 1495519739}
 --- !u!114 &796513618
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1782,6 +1735,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 301431d321d624b2286d2e18f680489e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &796513619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796513615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cecf7c757ec44dd98b166f9b53a9fe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &796513620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796513615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83aaa9596bb143bcba445c5182404a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &994557292
@@ -2493,6 +2470,55 @@ Transform:
   m_Father: {fileID: 491691746}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1495519737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1495519738}
+  - component: {fileID: 1495519739}
+  m_Layer: 0
+  m_Name: Minion Pooler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1495519738
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495519737}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 796513616}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495519739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495519737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1351124ac458142aeac80b81959f78f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  key: 
+  prefab: {fileID: 1793322241184360, guid: ea8dae6c7dcd24cca80a7f1ec984aaf1, type: 3}
+  prepopulate: 0
+  maxCount: 2147483647
+  autoRegister: 1
+  autoClear: 1
 --- !u!1 &1516687783
 GameObject:
   m_ObjectHideFlags: 0
@@ -2555,7 +2581,7 @@ Transform:
   m_Children:
   - {fileID: 483238484}
   m_Father: {fileID: 796513616}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1526749285
 MonoBehaviour:

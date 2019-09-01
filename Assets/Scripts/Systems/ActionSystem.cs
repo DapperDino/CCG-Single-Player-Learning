@@ -48,10 +48,16 @@ public class ActionSystem : Aspect {
 	IEnumerator Sequence (GameAction action) {
 		this.PostNotification (beginSequenceNotification, action);
 
+		if (action.Validate () == false)
+			action.Cancel ();
+
 		var phase = MainPhase (action.prepare);
 		while (phase.MoveNext ()) { yield return null; }
 
 		phase = MainPhase (action.perform);
+		while (phase.MoveNext ()) { yield return null; }
+
+		phase = MainPhase (action.cancel);
 		while (phase.MoveNext ()) { yield return null; }
 
 		if (rootAction == action) {
@@ -63,7 +69,9 @@ public class ActionSystem : Aspect {
 	}
 
 	IEnumerator MainPhase (Phase phase) {
-		if (phase.owner.isCanceled)
+		bool isActionCancelled = phase.owner.isCanceled;
+		bool isCancelPhase = phase.owner.cancel == phase;
+		if (isActionCancelled ^ isCancelPhase)
 			yield break;
 
 		var reactions = openReactions = new List<GameAction> ();

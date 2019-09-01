@@ -3,27 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using TheLiquidFire.AspectContainer;
 
-public static class GameFactory
-{
+public static class GameFactory {
 
-    public static Container Create()
-    {
-        Container game = new Container();
+	public static Container Create () {
+		Container game = new Container ();
 
-        // Add Systems
-        game.AddAspect<ActionSystem>();
-        game.AddAspect<DataSystem>();
-        game.AddAspect<DestructableSystem>();
-        game.AddAspect<MatchSystem>();
-        game.AddAspect<PlayerSystem>();
-        game.AddAspect<VictorySystem>();
-        game.AddAspect<CardSystem>();
-        game.AddAspect<MinionSystem>();
+		// Add Systems
+		game.AddAspect<ActionSystem> ();
+		game.AddAspect<AttackSystem> ();
+		game.AddAspect<CardSystem> ();
+		game.AddAspect<CombatantSystem> ();
+		game.AddAspect<DataSystem> ();
+		game.AddAspect<DestructableSystem> ();
+		game.AddAspect<ManaSystem> ();
+		game.AddAspect<MatchSystem> ();
+		game.AddAspect<MinionSystem> ();
+		game.AddAspect<PlayerSystem> ();
+		game.AddAspect<VictorySystem> ();
+        game.AddAspect<DeathSystem>();
+        game.AddAspect<EnemySystem>();
+        game.AddAspect<TauntSystem>();
 
-        // Add Other
-        game.AddAspect<StateMachine>();
-        game.AddAspect<GlobalGameState>();
+		// Add Other
+		game.AddAspect<StateMachine> ();
+		game.AddAspect<GlobalGameState> ();
 
-        return game;
-    }
+		return game;
+	}
 }
