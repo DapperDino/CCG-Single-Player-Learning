@@ -41,21 +41,11 @@ public class GameViewSystem : MonoBehaviour, IAspect {
 		match.players [1].mode = ControlModes.Computer;
 
 		foreach (Player p in match.players) {
-			for (int i = 0; i < Player.maxDeck; ++i) {
-				var card = new Minion ();
-				card.name = "Card " + i.ToString();
-				card.cost = Random.Range (1, 10);
-				card.maxHitPoints = card.hitPoints = Random.Range (1, card.cost);
-				card.attack = card.cost - card.hitPoints;
-				card.allowedAttacks = 1;
+			var deck = DeckFactory.Create ();
+			foreach (Card card in deck) {
 				card.ownerIndex = p.index;
-                if(i % 3 == 0)
-                {
-                    card.AddAspect(new Taunt());
-                    card.text = "Taunt";
-                }
-				p [Zones.Deck].Add (card);
 			}
+			p [Zones.Deck].AddRange (deck);
 
 			var hero = new Hero ();
 			hero.hitPoints = hero.maxHitPoints = 30;

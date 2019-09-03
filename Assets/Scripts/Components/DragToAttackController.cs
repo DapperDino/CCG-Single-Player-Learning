@@ -78,12 +78,13 @@ public class DragToAttackController : MonoBehaviour, IBeginDragHandler, IDragHan
 
 	private class CompleteState : BaseControllerState {
 		public override void Enter () {
-			owner.gameStateMachine.ChangeState<PlayerIdleState> ();
-
 			if (owner.attacker != null && owner.defender != null) {
 				var action = new AttackAction (owner.attacker, owner.defender);
 				owner.gameContainer.Perform (action);
 			}
+
+			if (!owner.gameContainer.GetAspect<ActionSystem>().IsActive)
+				owner.gameStateMachine.ChangeState<PlayerIdleState> ();
 
 			owner.attacker = owner.defender = null;
 			owner.stateMachine.ChangeState<WaitingForInputState> ();

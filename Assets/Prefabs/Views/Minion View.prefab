@@ -195,6 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4071831532467750}
   - component: {fileID: 114424630085971510}
+  - component: {fileID: 114952862107505974}
   m_Layer: 0
   m_Name: Minion View
   m_TagString: Untagged
@@ -236,6 +237,18 @@ MonoBehaviour:
   active: {fileID: 21300000, guid: b88e682b7f4634ec3a288ab8f5ced63e, type: 3}
   inactiveTaunt: {fileID: 21300000, guid: e6041fccace894bc2bfbd518bca7831d, type: 3}
   activeTaunt: {fileID: 21300000, guid: 2fbc4417a34b047f48b4802abcef3efe, type: 3}
+--- !u!114 &114952862107505974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793322241184360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad0671d0ffa75444babdfd256914d99c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1834406696516480
 GameObject:
   m_ObjectHideFlags: 0

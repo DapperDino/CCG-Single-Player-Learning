@@ -9,20 +9,23 @@ public static class GameFactory {
 		Container game = new Container ();
 
 		// Add Systems
+		game.AddAspect<AbilitySystem> ();
 		game.AddAspect<ActionSystem> ();
 		game.AddAspect<AttackSystem> ();
 		game.AddAspect<CardSystem> ();
 		game.AddAspect<CombatantSystem> ();
 		game.AddAspect<DataSystem> ();
+		game.AddAspect<DeathSystem> ();
 		game.AddAspect<DestructableSystem> ();
+		game.AddAspect<EnemySystem> ();
 		game.AddAspect<ManaSystem> ();
 		game.AddAspect<MatchSystem> ();
 		game.AddAspect<MinionSystem> ();
 		game.AddAspect<PlayerSystem> ();
+		game.AddAspect<SpellSystem> ();
+		game.AddAspect<TargetSystem> ();
+		game.AddAspect<TauntSystem> ();
 		game.AddAspect<VictorySystem> ();
-        game.AddAspect<DeathSystem>();
-        game.AddAspect<EnemySystem>();
-        game.AddAspect<TauntSystem>();
 
 		// Add Other
 		game.AddAspect<StateMachine> ();
